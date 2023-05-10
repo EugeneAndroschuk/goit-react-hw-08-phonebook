@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { userRegister, userLogIn, userLogout } from './thunks';
+import { userRegister, userLogIn, userLogout, userRefresh } from './thunks';
 
 const initialState = {
   user: { name: null, email: null },
@@ -21,10 +21,21 @@ const authSlice = createSlice({
           state.isLoggedIn = true;
         }
       )
-      .addMatcher(isAnyOf(userLogout.fulfilled), (state) => {
-          state.user = { email: null, password: null };
-          state.token = null;
-          state.isLoggedIn = false;
+      .addMatcher(isAnyOf(userLogout.fulfilled), state => {
+        state.user = { email: null, password: null };
+        state.token = null;
+        state.isLoggedIn = false;
+      })
+      .addMatcher(isAnyOf(userRefresh.pending), state => {
+        state.isRefreshing = true;
+      })
+      .addMatcher(isAnyOf(userRefresh.fulfilled), (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addMatcher(isAnyOf(userRefresh.rejected), state => {
+        state.isRefreshing = false;
       });
   },
 });

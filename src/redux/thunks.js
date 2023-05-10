@@ -19,9 +19,9 @@ export const userRegister = createAsyncThunk(
   'auth/userRegister',
   async (credentials, thunkAPI) => {
     try {
-      const res = await axios.post('/users/signup', credentials);
-      setAuthToken(res.data.token);
-      return res.data;
+      const response = await axios.post('/users/signup', credentials);
+      setAuthToken(response.data.token);
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -32,9 +32,9 @@ export const userLogIn = createAsyncThunk(
   'auth/userLogIn',
   async (credentials, thunkAPI) => {
     try {
-      const res = await axios.post('/users/login', credentials);
-      setAuthToken(res.data.token);
-      return res.data;
+      const response = await axios.post('/users/login', credentials);
+      setAuthToken(response.data.token);
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -54,15 +54,31 @@ export const userLogout = createAsyncThunk(
   }
 );
 
+export const userRefresh = createAsyncThunk(
+  'auth/userRefresh',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const localStorageToken = state.auth.token;
+    if(localStorageToken === null) return thunkAPI.rejectWithValue();
+
+    setAuthToken(localStorageToken);
+    try {
+      const response = await axios.get('/users/current');
+      // setAuthToken(response.data.token);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // CONTACTS operations
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get(
-        'https://645554f1f803f3457640a025.mockapi.io/contacts'
-      );
+      const response = await axios.get('/contacts');
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -72,12 +88,9 @@ export const fetchContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'contacts/addContact ',
-  async ({ name, phone }, thunkAPI) => {
+  async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post(
-        'https://645554f1f803f3457640a025.mockapi.io/contacts',
-        { name, phone }
-      );
+      const response = await axios.post('/contacts', credentials);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -90,7 +103,7 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `https://645554f1f803f3457640a025.mockapi.io/contacts/${contactId}`
+        `/contacts/${contactId}`
       );
       return response.data;
     } catch (e) {

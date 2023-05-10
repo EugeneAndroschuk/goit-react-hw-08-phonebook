@@ -11,7 +11,7 @@ const Contacts = () => {
 
         <h2 className={css.head}>Contacts</h2>
         <Filter />
-        
+        <ContactList/>
       </div>
     );
 }
