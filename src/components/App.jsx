@@ -3,16 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, lazy } from 'react';
 import { userRefresh } from 'redux/thunks';
 import SharedLayout from './SharedLayout';
-import Contacts from '../pages/Contacts';
-import Register from '../pages/Register';
-import Login from '../pages/Login';
-// import Home from '../pages/Home';
 import Loader from './Loader/Loader';
 import PrivateRoute from './PrivateRoute';
 import RestrictedRoute from './RestrictedRoute';
 import { getUserIsRefreshing, getUserTheme } from 'redux/selectors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import css from "./App.module.css";
 
 const HomePage = lazy(() => import('../pages/Home'));
 const ContactsPage = lazy(() => import('../pages/Contacts'));
