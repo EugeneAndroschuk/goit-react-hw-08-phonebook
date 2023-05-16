@@ -6,11 +6,17 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
+  theme: 'light',
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addMatcher(
@@ -41,3 +47,4 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
+export const { setTheme } = authSlice.actions;

@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/thunks';
 import { getContacts } from 'redux/selectors';
+import { Paper, TextField, Button } from '@mui/material';
 import css from './ContactForm.module.css';
 
-const ContactForm = () => {
+const ContactForm = (props) => {
   const[name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
   const contactsFromStore = useSelector(getContacts);
 
-  const handleSubmitForm = e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
 
     const isExist = contactsFromStore.some(
@@ -25,6 +27,7 @@ const ContactForm = () => {
     dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
+    props.onCloseModal();
   };
 
   const handleInputChange = e => {
@@ -40,38 +43,53 @@ const ContactForm = () => {
   };
 
     return (
-      <form className={css.form} onSubmit={handleSubmitForm}>
-        <label htmlFor="text">Name</label>
-        <input
-          className={css.input}
-          type="text"
-          name="name"
-          value={name}
-          id="text"
-          onChange={handleInputChange}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+      <Paper elevation={24} className={css.form}>
+        <form onSubmit={handleFormSubmit}>
+          <h2 className={css.formTitle}>enter CONTACT DATA</h2>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            label="Name"
+            name="name"
+              value={name}
+            autoComplete="name"
+            autoFocus
+              onChange={handleInputChange}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-        />
+          />
 
-        <label htmlFor="tel">Number</label>
-        <input
-          className={css.input}
-          type="tel"
-          name="number"
-          value={number}
-          id="tel"
-          onChange={handleInputChange}
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            type="tel"
+            label="number"
+            name="number"
+              value={number}
+            autoComplete="phone number"
+            autoFocus
+              onChange={handleInputChange}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-        />
+          />
 
-        <button className={css.submitBtn} type="submit">
-          Add contact
-        </button>
-      </form>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Add Contact
+          </Button>
+        </form>
+      </Paper>
     );
 }
+
+ContactForm.propTypes = {
+  onCloseModal: PropTypes.func.isRequired,
+};
 
 export default ContactForm;

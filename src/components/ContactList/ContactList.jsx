@@ -4,7 +4,7 @@ import { fetchContacts, deleteContact } from 'redux/thunks';
 import { getContacts, getIsLoading, getFilter } from 'redux/selectors';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
 import Loader from 'components/Loader/Loader';
-import css from './ContactList.module.css';
+import { Grid } from '@mui/material';
 
 const ContactList = () => {
   const contactsFromStore = useSelector(getContacts);
@@ -32,18 +32,18 @@ const ContactList = () => {
 
   return (
     <>
-      <ul className={css['contact-list']}>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {filteredContacts.length > 0 &&
           filteredContacts.map(contact => (
-            <li key={contact.id}>
+            <Grid item xs={6} sm={4} md={4} key={contact.id}>
               <ContactListItem
                 contact={contact}
                 onDeleteContact={onDeleteContact}
               />
-            </li>
+            </Grid>
           ))}
-      </ul>
-      {isLoading && <Loader/>}
+      </Grid>
+      {isLoading && <Loader />}
     </>
   );
 }

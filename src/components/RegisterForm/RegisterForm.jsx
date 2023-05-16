@@ -1,5 +1,8 @@
 import { useDispatch } from "react-redux";
 import { userRegister } from "redux/thunks";
+import { Paper, TextField, Button } from "@mui/material";
+import commonCss from "../../css/common.module.css";
+import css from "./RegisterForm.module.css"
 
 
 const RegisterForm = () => {
@@ -13,22 +16,52 @@ const RegisterForm = () => {
     }
     
     return (
-        <form onSubmit={handleSubmitForm}>
-            <h2>REGISTRATION FORM</h2>
-        <label>
-          Username
-          <input type="text" name="name" />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" />
-        </label>
-        <label>
-          Password
-          <input type="password" name="password" />
-        </label>
-        <button type="submit">Register</button>
-      </form>
+      <div className={commonCss.container}>
+        <Paper elevation={24} className={css.form}>
+          <form onSubmit={handleSubmitForm}>
+            <h2 className={css.formTitle}>SIGN UP</h2>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              type="password"
+              label="Password"
+              name="password"
+              autoComplete="current-password"
+              autoFocus
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Paper>
+      </div>
     );
 }
 

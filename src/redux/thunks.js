@@ -61,10 +61,9 @@ export const userRefresh = createAsyncThunk(
     const localStorageToken = state.auth.token;
     if(localStorageToken === null) return thunkAPI.rejectWithValue();
 
-    setAuthToken(localStorageToken);
     try {
+      setAuthToken(localStorageToken);
       const response = await axios.get('/users/current');
-      // setAuthToken(response.data.token);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -105,6 +104,18 @@ export const deleteContact = createAsyncThunk(
       const response = await axios.delete(
         `/contacts/${contactId}`
       );
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const updateContact = createAsyncThunk(
+  'contacts/updateContact ',
+  async ({contactId, name, number}, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/contacts/${contactId}`, {name, number});
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);

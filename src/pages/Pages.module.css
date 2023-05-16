@@ -1,9 +1,26 @@
-.app {
-    padding: 20px;
-    font-size: 32px;
+.homeTitle {
+    text-align: center;
 }
-.head {
-    margin-bottom: 30px;
-    font-size: 40px;
-    font-weight: 700;
+
+.bgdImg {
+    width: 640px;
+    height: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url("../images/phonebook.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.contactList {
+    width: 1200px;
+    /* display: flex;
+    justify-content: center; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.filter {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
 }

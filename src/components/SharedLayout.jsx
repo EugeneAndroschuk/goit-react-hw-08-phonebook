@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import AppBar from './AppBar/AppBar';
+import Navigation from './Navigation/Navigation';
 
 const SharedLayout = () => {
   return (
     <div>
-      <AppBar />
+      <Navigation />
       <main>
-        <Outlet />
+        <Suspense fallback={<div>Is Loading</div>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );
