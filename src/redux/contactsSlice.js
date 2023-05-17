@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import {fetchContacts, addContact, deleteContact, updateContact} from './thunks';
+import {fetchContacts, addContact, deleteContact, updateContact, userLogout} from './thunks';
 
 const initialState = {
   items: [],
@@ -63,6 +63,10 @@ export const contactsSlice = createSlice({
           contact => contact.id === action.payload.id
         );
         state.items.splice(index, 1, action.payload);
+      }).addMatcher(isAnyOf(userLogout.fulfilled), (state) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items = [];
       });
   },
 });

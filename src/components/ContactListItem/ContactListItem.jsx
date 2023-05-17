@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -8,6 +8,8 @@ import {
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
+  Dialog,
+  DialogContent,
 } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import {
@@ -16,7 +18,6 @@ import {
   Share,
   PhoneAndroidOutlined,
 } from '@mui/icons-material';
-import ModalWindow from 'components/ModalWindow/ModalWindow';
 import ContactFormEdit from 'components/ContactFormEdit/ContactFormEdit';
 
 const ContactListItem = (props) => {
@@ -39,7 +40,7 @@ const ContactListItem = (props) => {
         <EditOutlined
           fontSize="large"
           sx={{ color: 'green' }}
-          onClick={()=>onEditContact(contact.id)}
+          onClick={() => onEditContact(contact.id)}
         />
       ),
       name: 'Edit Contact',
@@ -52,11 +53,11 @@ const ContactListItem = (props) => {
 
   function onEditContact(id) {
     setOpen(true);
- };
+  };
 
   function stringAvatar(name) {
     const formattedName = name.split(' ');
-    if(formattedName.length === 1) return {
+    if (formattedName.length === 1) return {
       children: `${name.split(' ')[0][0]}`,
     }; else return {
       children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
@@ -118,9 +119,16 @@ const ContactListItem = (props) => {
         ))}
       </SpeedDial>
 
-      <ModalWindow isOpenModal={open}>
-        <ContactFormEdit onCloseModal={handleClose} contact={contact} />
-      </ModalWindow>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <DialogContent>
+          <ContactFormEdit onCloseModal={handleClose} contact={contact} />
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
