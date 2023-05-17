@@ -11,6 +11,10 @@ const ContactForm = (props) => {
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
   const contactsFromStore = useSelector(getContacts);
+  const patternNumber = '[0-9]{3}-[0-9]{2}-[0-9]{2}';
+  
+  // \+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}
+  // ^\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}$
 
   const handleFormSubmit = e => {
     e.preventDefault();
@@ -52,12 +56,18 @@ const ContactForm = (props) => {
             fullWidth
             label="Name"
             name="name"
-              value={name}
+            value={name}
             autoComplete="name"
             autoFocus
-              onChange={handleInputChange}
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            onChange={handleInputChange}
+            inputProps={{
+              pattern:
+                "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+              title:
+                "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
+            }}
+            // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            // title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           />
 
           <TextField
@@ -67,12 +77,17 @@ const ContactForm = (props) => {
             type="tel"
             label="number"
             name="number"
-              value={number}
+            value={number}
             autoComplete="phone number"
             autoFocus
-              onChange={handleInputChange}
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            onChange={handleInputChange}
+            inputProps={{
+              pattern: `${patternNumber}`,
+              title:
+                'Phone number must be in 111-11-11 format',
+            }}
+            // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            // title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           />
 
           <Button

@@ -72,6 +72,7 @@ const App = () => {
               }
             />
           </Route>
+          <Route path="*" element={<h1>Sorry, this page is not found</h1>} />
         </Routes>
       )}
     </ThemeProvider>
