@@ -56,8 +56,9 @@ const ContactListItem = (props) => {
 
   function stringAvatar(name) {
     const formattedName = name.split(' ');
-    // console.log(formattedName);
-    return {
+    if(formattedName.length === 1) return {
+      children: `${name.split(' ')[0][0]}`,
+    }; else return {
       children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
     };
   }

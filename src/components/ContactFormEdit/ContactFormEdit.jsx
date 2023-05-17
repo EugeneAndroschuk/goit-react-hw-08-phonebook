@@ -16,7 +16,7 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
     e.preventDefault();
 
     const isExist = contactsFromStore.some(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
+      item => (item.name.toLowerCase() === name.toLowerCase()) && (item.id !== contact.id)
     );
 
     if (isExist) {
