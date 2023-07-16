@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
+axios.defaults.baseURL = 'https://db-phonebook-olo8.onrender.com';
 
 // Utility to add JWT
 const setAuthToken = token => {
@@ -19,7 +19,7 @@ export const userRegister = createAsyncThunk(
   'auth/userRegister',
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post('/users/signup', credentials);
+      const response = await axios.post('/api/users/register', credentials);
       setAuthToken(response.data.token);
       return response.data;
     } catch (error) {
@@ -32,7 +32,7 @@ export const userLogIn = createAsyncThunk(
   'auth/userLogIn',
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post('/users/login', credentials);
+      const response = await axios.post('/api/users/login', credentials);
       setAuthToken(response.data.token);
       return response.data;
     } catch (error) {
@@ -45,7 +45,7 @@ export const userLogout = createAsyncThunk(
   'auth/userLogout',
   async (_, thunkAPI) => {
     try {
-      await axios.post('/users/logout');
+      await axios.post('/api/users/logout');
       clearAuthToken();
       // return res.data;
     } catch (error) {
@@ -63,7 +63,7 @@ export const userRefresh = createAsyncThunk(
 
     try {
       setAuthToken(localStorageToken);
-      const response = await axios.get('/users/current');
+      const response = await axios.get('/api/users/current');
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -77,7 +77,7 @@ export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get('/contacts');
+      const response = await axios.get('/api/contacts');
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -89,7 +89,7 @@ export const addContact = createAsyncThunk(
   'contacts/addContact ',
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post('/contacts', credentials);
+      const response = await axios.post('/api/contacts', credentials);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -102,7 +102,7 @@ export const deleteContact = createAsyncThunk(
   async (contactId, thunkAPI) => {
     try {
       const response = await axios.delete(
-        `/contacts/${contactId}`
+        `/api/contacts/${contactId}`
       );
       return response.data;
     } catch (e) {
@@ -113,9 +113,9 @@ export const deleteContact = createAsyncThunk(
 
 export const updateContact = createAsyncThunk(
   'contacts/updateContact ',
-  async ({contactId, name, number}, thunkAPI) => {
+  async ({contactId, name, phone, email}, thunkAPI) => {
     try {
-      const response = await axios.patch(`/contacts/${contactId}`, {name, number});
+      const response = await axios.put(`/api/contacts/${contactId}`, {name, phone, email});
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);

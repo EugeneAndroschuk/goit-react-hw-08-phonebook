@@ -8,10 +8,11 @@ import css from './ContactForm.module.css';
 
 const ContactForm = (props) => {
   const[name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
+  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
   const contactsFromStore = useSelector(getContacts);
-  const patternNumber = '[0-9]{3}-[0-9]{2}-[0-9]{2}';
+  const patternNumber = '^([(]d{3}[)])+ d{3}-d{4}$';
   
   // \+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}
   // ^\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}$
@@ -28,9 +29,10 @@ const ContactForm = (props) => {
       return;
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact({ name, phone, email }));
     setName('');
     setNumber('');
+    setEmail('');
     props.onCloseModal();
   };
 
@@ -38,11 +40,17 @@ const ContactForm = (props) => {
     const { name, value } = e.currentTarget;
 
     switch (name) {
-      case 'name': setName(value);
+      case 'name':
+        setName(value);
         break;
-      case 'number': setNumber(value);
+      case 'number':
+        setNumber(value);
         break;
-      default: break;
+      case 'email':
+        setEmail(value);
+        break;
+      default:
+        break;
     }
   };
 
@@ -61,8 +69,7 @@ const ContactForm = (props) => {
             autoFocus
             onChange={handleInputChange}
             inputProps={{
-              pattern:
-                "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+              pattern: '^[A-Z]+[a-z]+ [A-Z]+[a-z]+$',
               title:
                 "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
             }}
@@ -74,17 +81,28 @@ const ContactForm = (props) => {
             margin="normal"
             required
             fullWidth
+            label="Email"
+            name="email"
+            value={email}
+            autoComplete="email"
+            autoFocus
+            onChange={handleInputChange}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             type="tel"
             label="number"
             name="number"
-            value={number}
+            value={phone}
             autoComplete="phone number"
             autoFocus
             onChange={handleInputChange}
             inputProps={{
               pattern: `${patternNumber}`,
-              title:
-                'Phone number must be in 111-11-11 format',
+              title: 'Phone number must be in 111-11-11 format',
             }}
             // pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             // title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"

@@ -8,7 +8,8 @@ import css from "./ContactFormEdit.module.css"
 
 const ContactFormEdit = ({ contact, onCloseModal }) => {
   const [name, setName] = useState(contact.name);
-  const [number, setNumber] = useState(contact.number);
+  const [phone, setNumber] = useState(contact.phone);
+  const [email, setEmail] = useState(contact.email);
   const dispatch = useDispatch();
   const contactsFromStore = useSelector(getContacts);
 
@@ -16,7 +17,7 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
     e.preventDefault();
 
     const isExist = contactsFromStore.some(
-      item => (item.name.toLowerCase() === name.toLowerCase()) && (item.id !== contact.id)
+      item => (item.name.toLowerCase() === name.toLowerCase()) && (item._id !== contact._id)
     );
 
     if (isExist) {
@@ -24,9 +25,10 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
       return;
     }
 
-    dispatch(updateContact({ contactId: contact.id, name, number }));
+    dispatch(updateContact({ contactId: contact._id, name, phone, email }));
     setName('');
     setNumber('');
+    setEmail('');
     onCloseModal();
   };
 
@@ -39,6 +41,9 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
         break;
       case 'number':
         setNumber(value);
+        break;
+      case 'email':
+        setEmail(value);
         break;
       default:
         break;
@@ -59,8 +64,20 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
           autoComplete="name"
           autoFocus
           onChange={handleInputChange}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="^[A-Z]+[a-z]+ [A-Z]+[a-z]+$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+        />
+
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          label="Email"
+          name="email"
+          value={email}
+          autoComplete="email"
+          autoFocus
+          onChange={handleInputChange}
         />
 
         <TextField
@@ -70,11 +87,11 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
           type="tel"
           label="number"
           name="number"
-          value={number}
+          value={phone}
           autoComplete="phone number"
           autoFocus
           onChange={handleInputChange}
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          pattern="^([(]d{3}[)])+ d{3}-d{4}$"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         />
 
@@ -94,9 +111,9 @@ const ContactFormEdit = ({ contact, onCloseModal }) => {
 ContactFormEdit.propTypes = {
   onCloseModal: PropTypes.func.isRequired,
   contact: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
 };
 

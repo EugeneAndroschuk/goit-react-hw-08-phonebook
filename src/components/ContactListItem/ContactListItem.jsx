@@ -17,6 +17,7 @@ import {
   EditOutlined,
   Share,
   PhoneAndroidOutlined,
+  AlternateEmailOutlined,
 } from '@mui/icons-material';
 import ContactFormEdit from 'components/ContactFormEdit/ContactFormEdit';
 
@@ -28,7 +29,7 @@ const ContactListItem = (props) => {
     {
       icon: (
         <DeleteForeverOutlined
-          onClick={() => onDeleteContact(contact.id)}
+          onClick={() => onDeleteContact(contact._id)}
           fontSize="large"
           sx={{ color: 'red' }}
         />
@@ -40,7 +41,7 @@ const ContactListItem = (props) => {
         <EditOutlined
           fontSize="large"
           sx={{ color: 'green' }}
-          onClick={() => onEditContact(contact.id)}
+          onClick={() => onEditContact(contact._id)}
         />
       ),
       name: 'Edit Contact',
@@ -93,6 +94,29 @@ const ContactListItem = (props) => {
           sx={{
             width: 56,
             height: 56,
+            bgcolor: 'yellow',
+            marginRight: '10px',
+          }}
+        >
+          <AlternateEmailOutlined fontSize="large" />
+        </Avatar>
+        <Typography variant="h5" component="span">
+          {contact.email}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          paddingTop: '8px',
+          paddingBottom: '8px',
+        }}
+      >
+        <Avatar
+          sx={{
+            width: 56,
+            height: 56,
             bgcolor: 'green',
             marginRight: '10px',
           }}
@@ -100,7 +124,7 @@ const ContactListItem = (props) => {
           <PhoneAndroidOutlined fontSize="large" />
         </Avatar>
         <Typography variant="h5" component="span">
-          {contact.number}
+          {contact.phone}
         </Typography>
       </Box>
 
@@ -136,9 +160,9 @@ const ContactListItem = (props) => {
 ContactListItem.propTypes = {
   onDeleteContact: PropTypes.func.isRequired,
   contact: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
 };
 

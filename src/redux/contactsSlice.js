@@ -51,7 +51,7 @@ export const contactsSlice = createSlice({
         state.error = null;
         // state.items.filter(contact => contact.id !== action.payload.id);
         const index = state.items.findIndex(
-          contact => contact.id === action.payload.id
+          contact => contact._id === action.payload._id
         );
         state.items.splice(index, 1);
       })
@@ -60,7 +60,7 @@ export const contactsSlice = createSlice({
         state.error = null;
         // state.items.filter(contact => contact.id !== action.payload.id);
         const index = state.items.findIndex(
-          contact => contact.id === action.payload.id
+          contact => contact._id === action.payload._id
         );
         state.items.splice(index, 1, action.payload);
       }).addMatcher(isAnyOf(userLogout.fulfilled), (state) => {

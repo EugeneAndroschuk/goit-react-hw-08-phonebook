@@ -35,7 +35,7 @@ const ContactList = () => {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {filteredContacts.length > 0 &&
           filteredContacts.map(contact => (
-            <Grid item xs={6} sm={4} md={4} key={contact.id}>
+            <Grid item xs={6} sm={4} md={4} key={contact._id}>
               <ContactListItem
                 contact={contact}
                 onDeleteContact={onDeleteContact}
