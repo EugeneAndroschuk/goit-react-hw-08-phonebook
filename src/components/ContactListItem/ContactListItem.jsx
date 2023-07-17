@@ -18,11 +18,14 @@ import {
   Share,
   PhoneAndroidOutlined,
   AlternateEmailOutlined,
+  StarBorderOutlined,
+  StarOutlined,
 } from '@mui/icons-material';
 import ContactFormEdit from 'components/ContactFormEdit/ContactFormEdit';
 
 const ContactListItem = (props) => {
-  const { contact, onDeleteContact } = props;
+  const { contact, onDeleteContact, onMakeFavorite } = props;
+  const [isFavorite, setIsFavorite] = useState(contact.favorite);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const actions = [
@@ -56,6 +59,11 @@ const ContactListItem = (props) => {
     setOpen(true);
   };
 
+  // const onHandleFavorite = (id) => {
+  //   onMakeFavorite(id, !isFavorite);
+  //   setIsFavorite(!isFavorite);
+  // }
+
   function stringAvatar(name) {
     const formattedName = name.split(' ');
     if (formattedName.length === 1) return {
@@ -67,6 +75,25 @@ const ContactListItem = (props) => {
 
   return (
     <Card sx={{ padding: '16px', width: '300px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          alignItems: 'center',
+          paddingTop: '8px',
+          paddingBottom: '8px',
+        }}
+        onClick={()=>{onMakeFavorite(contact._id, !isFavorite);
+          setIsFavorite(!isFavorite);
+        }}
+      >
+        {contact.favorite ? (
+          <StarOutlined fontSize="large" sx={{ color: 'blue' }} />
+        ) : (
+          <StarBorderOutlined fontSize="large" sx={{ color: 'blue' }} />
+        )}
+      </Box>
+
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
           {...stringAvatar(`${contact.name}`)}

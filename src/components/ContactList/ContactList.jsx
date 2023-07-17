@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchContacts, deleteContact } from 'redux/thunks';
+import { fetchContacts, deleteContact, updateContactFavorite } from 'redux/thunks';
 import { getContacts, getIsLoading, getFilter } from 'redux/selectors';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
 import Loader from 'components/Loader/Loader';
@@ -22,6 +22,10 @@ const ContactList = () => {
     dispatch(deleteContact(id));
   };
 
+  const onMakeFavorite = (id, isFavorite) => {
+    dispatch(updateContactFavorite({contactId: id, favorite: isFavorite}));
+  }
+
   function getFilteredContacts(contacts) {
     const normFilter = filterQuery.toLowerCase();
 
@@ -39,6 +43,7 @@ const ContactList = () => {
               <ContactListItem
                 contact={contact}
                 onDeleteContact={onDeleteContact}
+                onMakeFavorite={onMakeFavorite}
               />
             </Grid>
           ))}

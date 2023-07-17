@@ -1,5 +1,12 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import {fetchContacts, addContact, deleteContact, updateContact, userLogout} from './thunks';
+import {
+  fetchContacts,
+  addContact,
+  deleteContact,
+  updateContact,
+  updateContactFavorite,
+  userLogout,
+} from './thunks';
 
 const initialState = {
   items: [],
@@ -18,7 +25,8 @@ export const contactsSlice = createSlice({
           fetchContacts.pending,
           addContact.pending,
           deleteContact.pending,
-          updateContact.pending
+          updateContact.pending,
+          updateContactFavorite.pending
         ),
         state => {
           state.isLoading = true;
@@ -29,7 +37,8 @@ export const contactsSlice = createSlice({
           fetchContacts.rejected,
           addContact.rejected,
           deleteContact.rejected,
-          updateContact.rejected
+          updateContact.rejected,
+          updateContactFavorite.rejected
         ),
         (state, action) => {
           state.isLoading = false;
@@ -55,15 +64,19 @@ export const contactsSlice = createSlice({
         );
         state.items.splice(index, 1);
       })
-      .addMatcher(isAnyOf(updateContact.fulfilled), (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        // state.items.filter(contact => contact.id !== action.payload.id);
-        const index = state.items.findIndex(
-          contact => contact._id === action.payload._id
-        );
-        state.items.splice(index, 1, action.payload);
-      }).addMatcher(isAnyOf(userLogout.fulfilled), (state) => {
+      .addMatcher(
+        isAnyOf(updateContact.fulfilled, updateContactFavorite.fulfilled),
+        (state, action) => {
+          state.isLoading = false;
+          state.error = null;
+          // state.items.filter(contact => contact.id !== action.payload.id);
+          const index = state.items.findIndex(
+            contact => contact._id === action.payload._id
+          );
+          state.items.splice(index, 1, action.payload);
+        }
+      )
+      .addMatcher(isAnyOf(userLogout.fulfilled), state => {
         state.isLoading = false;
         state.error = null;
         state.items = [];

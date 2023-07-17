@@ -122,3 +122,17 @@ export const updateContact = createAsyncThunk(
     }
   }
 );
+
+export const updateContactFavorite = createAsyncThunk(
+  'contacts/updateContactFavorite',
+  async ({ contactId, favorite }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/api/contacts/${contactId}/favorite`, {
+        favorite,
+      });
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
