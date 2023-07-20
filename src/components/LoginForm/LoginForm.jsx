@@ -9,8 +9,9 @@ const LoginForm = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        const form = e.currentTarget;
-        dispatch(userLogIn({ email: form.elements.email.value, password: form.elements.password.value }));
+      const form = e.currentTarget;
+      dispatch(userLogIn({ email: form.elements.email.value, password: form.elements.password.value }));
+  
         form.reset();
 }
 
